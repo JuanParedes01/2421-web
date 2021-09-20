@@ -1,7 +1,7 @@
 let turno = 0;
 const tablero = [];
 
-const btnPulsado = (e) =>{
+const btnPulsado = (e, pos) =>{
     turno ++;
    const btn = e.target;
    const color = turno % 2 ? 'salmon' : 'paleGreen'
