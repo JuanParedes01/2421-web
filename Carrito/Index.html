@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista de Compras</title>
+        <meta name="viewpoint" content="width=device-width, user-scalable=no, initial-scale=1.0, maximus-scale=1.0, minimum-scale=1.0">
+        <link   rel="stylesheet" 
+                href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" 
+                integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" 
+                crossorigin="anonymous">
+        
+        <script>
+            window.onload = function(){
+
+                let baseDeDatos = [
+                    {
+                        id : 1,
+                        nombre: 'Bioshock',
+                        precio: 350.00,
+                        imagen: 'https://simg.nicepng.com/png/small/196-1962170_bioshock-infinite-booker-dewitt-take2-interactive-bioshock-infinite.png'
+                    },
+                    {
+                        id: 2,
+                        nombre: 'Read Dead Redemption II',
+                        precio: 1500.00,
+                        imagen: 'https://img1.freepng.es/20180705/yyb/kisspng-bill-elm-red-dead-redemption-2-video-game-xbox-360-red-dead-revolver-5b3dde112b56b4.0337101015307812011775.jpg'
+                    },
+                    {
+                        id: 3,
+                        nombre: 'HALO',
+                        precio: 1500.00,
+                        imagen: 'https://m.media-amazon.com/images/S/aplus-media/vc/53e96ca4-beee-4f4a-a886-763e355843ff.__CR0,0,300,400_PT0_SX300_V1___.png'
+                    },
+                    {
+                        id: 4,
+                        nombre: 'God of War',
+                        precio: 500.00,
+                        imagen: 'https://static.wixstatic.com/media/1c8ee6_6f5a2daee7cf415a8ac161fabc5efcb0~mv2.png/v1/fill/w_300,h_400,al_c,q_85,usm_0.66_1.00_0.01/god-of-war-png-kratos-png-transparent-im.webp'
+                    }
+                ]
+  
+                let $items = document.querySelector('#items');
+                let carrito = [];
+                let total = 0;
+                let $carrito = document.querySelector('#carrito');
+                let $total = document.querySelector('#total');
+  
+                function renderItems (){
+                    for (let info of baseDeDatos){
+
+                        let miNodo = document.createElement('div');
+                        miNodo.classList.add('card', 'col-sm-4');
+  
+                        let miNodoCardBody = document.createElement('div');
+                        miNodoCardBody.classList.add('card-doby');
+  
+                        let miNodoTitle = document.createElement('h5');
+                        miNodoTitle.classList.add('card-title');
+                        miNodoTitle.textContent = info['nombre'];
+
+                        let miNodoImagen = document.createElement('img');
+                        miNodoImagen.classList.add('card-text');
+                        miNodoImagen.setAttribute('src', info['imagen']);
+  
+                        let miNodoPrecio = document.createElement('p');
+                        miNodoPrecio.classList.add('card-text');
+                        miNodoPrecio.textContent = info['precio'] + '$';
+  
+                        let miNodoBoton = document.createElement('button');
+                        miNodoBoton.classList.add('btn', 'btn-primary');
+                        miNodoBoton.textContent = '+';
+                        miNodoBoton.setAttribute('marcador', info['id']);
+                        miNodoBoton.addEventListener('click', anyadirCarrito);
+
+                        miNodoCardBody.appendChild(miNodoImagen);
+                        miNodoCardBody.appendChild(miNodoTitle);
+                        miNodoCardBody.appendChild(miNodoPrecio);
+                        miNodoCardBody.appendChild(miNodoBoton);
+                        miNodo.appendChild(miNodoCardBody);
+                        $items.appendChild(miNodo);
+                    }
+                }
+  
+                function anyadirCarrito(){
+                    carrito.push(this.getAttribute('marcador'))
+                    calcularTotal();
+                    renderizarCarrito();
+                }
+  
+                function renderizarCarrito(){
+
+                    $carrito.textContent = '';
+                    let carritoSinDuplicados = [...new Set(carrito)];
+        
+                    carritoSinDuplicados.forEach(function (item, indice){
+                        let miItem = baseDeDatos.filter(function(itemBaseDatos){
+                            return itemBaseDatos['id'] == item
+                        });
+  
+                        let numeroUnidadesItem = carrito.reduce(function (total, itemId){
+                            return itemId === item ? total += 1 : total;
+                        }, 0);
+  
+                        let miNodo = document.createElement('li');
+                        miNodo.classList.add('list-group-item', 'text-right', 'mx-2');
+                        miNodo.textContent = `${numeroUnidadesItem} x ${miItem[0]['nombre']} - ${miItem[0]['precio']}$`;
+  
+                        let miBoton = document.createElement('button');
+                        miBoton.classList.add('btn', 'btn-danger', 'mx-5');
+                        miBoton.textContent = 'X';
+                        miBoton.style.marginLeft = '1rem';
+                        miBoton.setAttribute('item', item);
+                        miBoton.addEventListener('click', borrarItemCarrito);
+  
+                        miNodo.appendChild(miBoton);
+                        $carrito.appendChild(miNodo);
+                    })
+                }
+  
+                function borrarItemCarrito(){
+                    console.log()
+                    let id = this.getAttribute('item');
+
+                    carrito = carrito.filter(function (carritoId){
+                        return carritoId !== id;
+                    });
+
+                    renderizarCarrito();
+                    calcularTotal();
+                }
+  
+                function calcularTotal(){
+                    total = 0;
+
+                    for(let item of carrito){
+                        let miItem = baseDeDatos.filter(function(itemBaseDatos){
+                            return itemBaseDatos['id'] == item;
+                        });
+                        total = total + miItem[0]['precio'];
+                    }
+
+                    let totalDosDecimales = total.toFixed(2);
+                    $total.textContent = totalDosDecimales;
+                }
+
+                renderItems();
+            }
+        </script>
+</head>
+
+<body>
+    <div class = "container">
+
+        <div class = "row">
+
+            <main id="items" class="col-sm-8 row"></main>
+
+            <aside class="col-sm-4">
+                <h2>Carrito</h2>
+                <ul id="carrito" class="list-group"></ul>
+                <hr>
+                <p class="text-right">Total: <span id="total"></span>&dollar;</p>
+            </aside>
+
+        </div>
+
+    </div>
+</body>
+
+</html>
