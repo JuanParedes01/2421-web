@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Lista de Compras</title>
+        <meta name="viewpoint" content="width=device-width, user-scalable=no, initial-scale=1.0, maximus-scale=1.0, minimum-scale=1.0">
+        <link   rel="stylesheet" 
+                href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" 
+                integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" 
+                crossorigin="anonymous">
+        
+        <script src="Chart.js"></script>
+        <script src="main.js"></script>
+
+        <style>
+            body{
+                background: #E3E5EB;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .imgs{
+                width: 5cm; 
+                height: 5cm;
+            }
+        </style>
+        
+</head>
+<head>
+    <title>Usando highcharts </title>
+    <meta charset="utf-8" />
+    
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<body>
+    <div class = "container">
+
+        <div class = "row">
+
+            <main id="items" class="col-sm-8 row"></main>
+
+            <aside class="col-sm-4">
+                <h2>Carrito</h2>
+                <ul id="carrito" class="list-group"></ul>
+                <hr>
+                <p class="text-right">Total: <span id="total"></span>&dollar;</p>
+            </aside>
+
+        </div>
+
+    </div>
+
+    
+</body>
+</head>
+<body>
+   <div id="grafica"></div>
+    
+    <script>
+     $(function($){
+         $('#grafica').highcharts({
+             title:{text:'Grafica de productos'},
+             xAxis:{categories:['Bioshock','Red Dead Redemtion','Halo', 'God of War']},
+             yAxis:{title:'Porcentaje %',plotLines:[{value:0,width:1,color:'#808080'}]},
+             tooltip:{valueSuffix:'%'},
+             legend:{layout:'vertical',align:'right',verticalAlign:'middle',borderWidth:0},
+             series:[{type: 'column',name: 'Cantidad',data: [0,0,0, 0]}, 
+             
+              
+             
+             
+           ],
+             plotOptions:{line:{dataLabels:{enabled:true}}}
+         });
+     });
+    </script>
+</body>
+</html>
+
+</html>
